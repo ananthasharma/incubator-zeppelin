@@ -273,8 +273,14 @@ public class ZeppelinConfiguration extends XMLConfiguration {
 
   public int getWebSocketPort() {
     int port = getInt(ConfVars.ZEPPELIN_WEBSOCKET_PORT);
+    int serverPort = getServerPort();
+
     if (port < 0) {
-      return getServerPort() + 1;
+      if (serverPort <= 0) {
+        return 0;
+      } else {
+        return serverPort + 1;
+      }
     } else {
       return port;
     }
@@ -452,7 +458,7 @@ public class ZeppelinConfiguration extends XMLConfiguration {
       this.floatValue = -1;
       this.longValue = longValue;
       this.booleanValue = false;
-      this.type = VarType.INT;
+      this.type = VarType.LONG;
     }
 
     ConfVars(String varName, float floatValue) {
